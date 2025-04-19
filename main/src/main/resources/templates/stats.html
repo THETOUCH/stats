@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Stats</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Статистика аккаунта</h1>
+    <div class="mb-3">
+        Steam ID: <span th:text="${accountId}"></span>
+    </div>
+
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+
+    <div th:if="${stats != null and stats.size() > 0}">
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>Match ID</th>
+            <th>Hero</th>
+            <th>Kills</th>
+            <th>Deaths</th>
+            <th>Assists</th>
+            <th>Duration</th>
+            <th>Result</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="stat : ${stats}">
+            <td th:text="${stat.matchId}"></td>
+            <td th:text="${stat.heroName != null} ? ${stat.heroName} : ${stat.heroId}"></td>
+            <td th:text="${stat.kills}"></td>
+            <td th:text="${stat.deaths}"></td>
+            <td th:text="${stat.assists}"></td>
+            <td th:text="${stat.duration}"></td>
+            <td>
+                <span th:if="${stat.win}" class="badge bg-success">Win</span>
+                <span th:unless="${stat.win}" class="badge bg-danger">Loss</span>
+            </td>
+        </tr>
+        <tr th:if="${stats.empty}">
+            <td colspan="7">No data available</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+    <div th:if="${stats == null or stats.size() == 0}">
+        <p>Нет данных для отображения.</p>
+    </div>
+
+    <a href="/" class="btn btn-secondary mt-3">Назад</a>
+</div>
+</body>
+</html>
